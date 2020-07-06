@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#0B42B1"
+    android:layout_height="match_parent">
+
+
+
+    <ImageView
+        android:id="@+id/ivImage"
+        app:layout_constraintDimensionRatio="1:1"
+        android:layout_margin="24dp"
+        android:background="@drawable/ic_add"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+
+
+
+    <androidx.cardview.widget.CardView
+        app:layout_constraintTop_toBottomOf="@id/ivImage"
+        android:layout_width="match_parent"
+        android:layout_margin="24dp"
+        android:layout_height="50dp">
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            android:textSize="18sp"
+            android:lines="1"
+            android:maxLength="100"
+            android:inputType="textPersonName"
+            android:hint="Add name (max. 100 char)"
+            android:layout_height="match_parent"/>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+    <ua.palamarenko.cozyandroid2.tools.shape_view.views.ShapeTextView
+        android:id="@+id/tvSave"
+        android:layout_width="match_parent"
+        app:back_shape="RoundRect"
+        android:layout_margin="24dp"
+        android:textColor="@android:color/black"
+        android:text="SAVE"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:back_shape_color="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="50dp"/>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

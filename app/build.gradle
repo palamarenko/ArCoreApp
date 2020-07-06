@@ -9,12 +9,17 @@ android {
 
     defaultConfig {
         applicationId "com.example.exchangeapp"
-        minSdkVersion 22
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -34,8 +39,8 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
     implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "com.google.ar.sceneform.ux:sceneform-ux:1.15.0"
     implementation "androidx.recyclerview:recyclerview:$androidxVersion"
     implementation "androidx.cardview:cardview:$androidxVersion"
     implementation "androidx.legacy:legacy-support-v4:$androidxVersion"
@@ -51,3 +56,16 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
 
 }
+
+apply plugin: 'com.google.ar.sceneform.plugin'
+
+sceneform.asset('sampledata/models/GreenMaze.obj',
+        'default',
+        'sampledata/models/GreenMaze.sfa',
+        'src/main/assets/models/GreenMaze')
+
+
+sceneform.asset('sampledata/models/MeshBengalTiger.obj',
+        'default',
+        'sampledata/models/MeshBengalTiger.sfa',
+        'src/main/assets/models/MeshBengalTiger')

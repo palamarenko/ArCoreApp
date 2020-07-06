@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.example.exchangeapp.App
 import com.example.exchangeapp.io.db.DataBase
-import com.example.exchangeapp.io.interactors.RateInteractor
-import com.example.exchangeapp.io.interactors.RateInteractorImp
+import com.example.exchangeapp.io.interactors.ItemInteractor
+import com.example.exchangeapp.io.interactors.ItemInteractorImp
 import com.example.exchangeapp.io.rest.ApiGet
 import dagger.Component
 import dagger.Module
@@ -23,12 +23,12 @@ interface AppComponent {
     val rest: ApiGet
     val db: DataBase
     val applicationContext: Context
-    val rateInteractor: RateInteractor
+    val itemInteractor: ItemInteractor
 }
 
 
 val appComponent: AppComponent = App.component
-val rateInteractor = appComponent.rateInteractor
+val itemInteractor = appComponent.itemInteractor
 
 
 @Module
@@ -50,7 +50,6 @@ class DiModule {
         return Rest(ApiFactory<ApiGet>("https://api.exchangeratesapi.io/", ApiGet::class.java)).api
     }
 
-
     @Provides
     @Singleton
     fun provideDb(context: Context): DataBase {
@@ -62,8 +61,8 @@ class DiModule {
 
     @Provides
     @Singleton
-    fun provideRateInteractor(db: DataBase, apiGet: ApiGet): RateInteractor {
-        return RateInteractorImp(db, apiGet)
+    fun provideRateInteractor(db: DataBase, apiGet: ApiGet): ItemInteractor {
+        return ItemInteractorImp(db, apiGet)
     }
 
 
