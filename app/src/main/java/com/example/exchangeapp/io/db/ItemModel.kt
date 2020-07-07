@@ -1,6 +1,7 @@
 package com.example.exchangeapp.io.db
 
 import androidx.room.*
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 
@@ -27,6 +28,9 @@ interface ItemModelDao {
 
     @Query("SELECT * FROM ItemModel WHERE id  =:id")
     fun get(id : String): Single<ItemModel>
+
+    @Query("DELETE FROM ItemModel WHERE id  =:id")
+    fun delete(id : String): Completable
 
     @Query("SELECT * FROM ItemModel")
     fun listenList(): Flowable<List<ItemModel>>

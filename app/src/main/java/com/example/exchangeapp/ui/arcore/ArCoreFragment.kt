@@ -10,6 +10,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.Nullable
 import com.example.exchangeapp.io.arcore.AugmentedImageNode
 import com.example.exchangeapp.io.di.itemInteractor
@@ -17,6 +18,7 @@ import com.google.ar.core.*
 import com.google.ar.sceneform.ux.ArFragment
 import ua.palamarenko.cozyandroid2.tools.LOG_EVENT
 import java.io.IOException
+import java.lang.Exception
 import java.util.*
 
 
@@ -39,10 +41,15 @@ class ArCoreFragment : ArFragment() {
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?
-    ): View? {
 
+    
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        @Nullable container: ViewGroup?,
+        @Nullable savedInstanceState: Bundle?
+    ): View? {
+        LOG_EVENT("FRAGMENT", "onCreateView")
         val view = super.onCreateView(inflater, container, savedInstanceState)
         planeDiscoveryController.hide()
         planeDiscoveryController.setInstructionView(null)
@@ -55,11 +62,10 @@ class ArCoreFragment : ArFragment() {
         val config = super.getSessionConfiguration(session)
         config.focusMode = Config.FocusMode.AUTO
         if (!setupAugmentedImageDatabase(config, session)) {
-
             LOG_EVENT("ERROR", "Could not setup augmented image database")
         }
 
-        LOG_EVENT("THREAD",Looper.myLooper() == Looper.getMainLooper())
+        LOG_EVENT("THREAD", Looper.myLooper() == Looper.getMainLooper())
 
         return config
     }
@@ -83,7 +89,7 @@ class ArCoreFragment : ArFragment() {
                         node.addImage(augmentedImage)
                         augmentedImageMap[augmentedImage] = node
                         arSceneView.scene.addChild(node)
-                        LOG_EVENT("HELLO","IMAGE_CREATE")
+                        LOG_EVENT("HELLO", "IMAGE_CREATE")
                     }
                 }
                 TrackingState.STOPPED -> augmentedImageMap.remove(augmentedImage)
@@ -106,14 +112,25 @@ class ArCoreFragment : ArFragment() {
             return false
         }
 
-        val augmentedImageDatabase: AugmentedImageDatabase = AugmentedImageDatabase(session)
+        val augmentedImageDatabase = AugmentedImageDatabase(session)
 
-        itemInteractor.getListSink().forEach {
-            augmentedImageDatabase.addImage(
-                it.name,
-                loadAugmentedImageBitmap(it.imagePlace)
-            )
+
+        var count : Int = 0
+        var list = itemInteractor.getListSink()
+        var allCount = list.size
+
+        list.forEach {
+            try {
+                augmentedImageDatabase.addImage(
+                    it.name,
+                    loadAugmentedImageBitmap(it.imagePlace)
+                )
+            } catch (e: Exception) {
+                count++
+            }
         }
+
+        Toast.makeText(context,"${allCount} images processed. An error occurred in ${count} images",Toast.LENGTH_LONG).show()
 
 
         config.augmentedImageDatabase = augmentedImageDatabase
@@ -123,7 +140,8 @@ class ArCoreFragment : ArFragment() {
     private fun loadAugmentedImageBitmap(path: String): Bitmap? {
         try {
             return BitmapFactory.decodeFile(path)
-        } catch (e: IOException) { }
+        } catch (e: IOException) {
+        }
         return null
     }
 

@@ -21,5 +21,9 @@ class LibraryViewModel : BaseViewModel() {
         task(NAVIGATE,AddFragment().putString(ID,id))
     }
 
+    fun delete(id : String){
+        itemInteractor.delete(id).justSubscribe {  }
+    }
+
 
 }

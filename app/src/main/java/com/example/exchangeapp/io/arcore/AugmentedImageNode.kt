@@ -21,16 +21,12 @@ class AugmentedImageNode(val context: Context) :
 
     var image: AugmentedImage? = null
 
-    private val mazeRenderable: CompletableFuture<ModelRenderable?> =
-        ModelRenderable.builder()
-            .setSource(context, Uri.parse("models/MeshBengalTiger.sfb"))
-            .build()
+
 
     private val titleRendeble: CompletableFuture<ViewRenderable?> =
         ViewRenderable.builder()
             .setView(context, R.layout.custom_title)
             .setSizer(ViewSizer {
-                (it as TextView).text = "УРРА"
                 Vector3(0.1f, 0.1f, 0.1f)
 
             })
@@ -41,8 +37,8 @@ class AugmentedImageNode(val context: Context) :
 
     fun addImage(image: AugmentedImage) {
         this.image = image
-        if (!mazeRenderable.isDone || !titleRendeble.isDone) {
-            CompletableFuture.allOf(mazeRenderable, titleRendeble)
+        if (!titleRendeble.isDone) {
+            CompletableFuture.allOf(titleRendeble)
                 .thenAccept { aVoid: Void? ->
                     addImage(image)
                 }
@@ -58,19 +54,14 @@ class AugmentedImageNode(val context: Context) :
             Math.max(image.extentX, image.extentZ)
         maze_scale = max_image_edge / maze_edge_size
 
-
-//        val mazeNode = Node()
-//        mazeNode.setParent(this)
-//        mazeNode.renderable = mazeRenderable.getNow(null)
-//        mazeNode.localScale = Vector3(maze_scale, maze_scale, maze_scale)
-//
-
         LOG_EVENT("HELLO", "ADD TITLE")
 
         val titleNode = Node()
         titleNode.setParent(this)
         titleNode.isEnabled = false
         titleRendeble.thenAccept {
+            (it?.view as TextView).text = image.name
+
             titleNode.renderable = it
             titleNode.isEnabled = true
         }.getNow(null)

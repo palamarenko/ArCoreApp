@@ -4,6 +4,7 @@ import com.example.exchangeapp.io.db.DataBase
 import com.example.exchangeapp.io.db.ItemModel
 import com.example.exchangeapp.io.db.ItemModelDao
 import com.example.exchangeapp.io.rest.ApiGet
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import ua.palamarenko.cozyandroid2.tools.PreferencesProvider
@@ -24,6 +25,7 @@ interface ItemInteractor {
     fun getList(): Single<List<ItemModel>>
     fun getListSink(): List<ItemModel>
     fun get(id: String): Single<ItemModel>
+    fun delete(id: String): Completable
 }
 
 class ItemInteractorImp(val db: DataBase, val rest: ApiGet) : ItemInteractor {
@@ -57,6 +59,10 @@ class ItemInteractorImp(val db: DataBase, val rest: ApiGet) : ItemInteractor {
 
     override fun get(id: String): Single<ItemModel> {
         return db.itemDao.get(id).setSchedulers()
+    }
+
+    override fun delete(id: String): Completable {
+        return db.itemDao.delete(id).setSchedulers()
     }
 
 

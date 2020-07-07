@@ -45,7 +45,7 @@ class AddFragment : BaseFragment<AddViewModel>() {
 
         tvSave.click {
             if (file != null && etName.toText().isNotEmpty()) {
-                vm().saveItem(getArgumentString(ID), etName.toText(), file!!)
+                vm().saveItem(getArgumentString(ID), etName.toText(), file?:"")
             } else {
                 task(TOAST, "Add image or name")
             }

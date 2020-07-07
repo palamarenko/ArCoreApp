@@ -8,6 +8,8 @@ import com.google.ar.core.AugmentedImage
 import com.google.ar.core.TrackingState
 import com.google.ar.sceneform.FrameTime
 import com.google.ar.sceneform.ux.ArFragment
+import ua.palamarenko.cozyandroid2.base_fragment.navigation.tasks.CozyActivity
+import ua.palamarenko.cozyandroid2.base_fragment.navigation.tasks.EmptyViewModel
 import ua.palamarenko.cozyandroid2.tools.LOG_EVENT
 import java.util.*
 

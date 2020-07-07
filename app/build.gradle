@@ -32,7 +32,9 @@ android {
 
 dependencies {
     api 'ua.palamarenko:cozy_android:0.5.36'
-
+    implementation "com.google.ar.sceneform.ux:sceneform-ux:1.15.0"
+    implementation 'com.google.ar:core:1.15.0'
+    implementation 'com.google.ar.sceneform:core:1.15.0'
     def daggerVersion = "2.15"
     def roomVersion = '2.2.3'
     def androidxVersion = '1.0.0'
@@ -40,7 +42,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation "com.google.ar.sceneform.ux:sceneform-ux:1.15.0"
     implementation "androidx.recyclerview:recyclerview:$androidxVersion"
     implementation "androidx.cardview:cardview:$androidxVersion"
     implementation "androidx.legacy:legacy-support-v4:$androidxVersion"
@@ -52,6 +53,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation "com.google.dagger:dagger:$daggerVersion"
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.jakewharton:process-phoenix:2.0.0'
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
 
@@ -59,13 +61,3 @@ dependencies {
 
 apply plugin: 'com.google.ar.sceneform.plugin'
 
-sceneform.asset('sampledata/models/GreenMaze.obj',
-        'default',
-        'sampledata/models/GreenMaze.sfa',
-        'src/main/assets/models/GreenMaze')
-
-
-sceneform.asset('sampledata/models/MeshBengalTiger.obj',
-        'default',
-        'sampledata/models/MeshBengalTiger.sfa',
-        'src/main/assets/models/MeshBengalTiger')
