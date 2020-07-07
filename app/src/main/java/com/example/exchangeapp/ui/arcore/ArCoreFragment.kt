@@ -5,26 +5,24 @@ import android.content.Context
 import android.content.res.AssetManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
 import com.example.exchangeapp.io.arcore.AugmentedImageNode
+import com.example.exchangeapp.io.di.itemInteractor
 import com.google.ar.core.*
 import com.google.ar.sceneform.ux.ArFragment
 import ua.palamarenko.cozyandroid2.tools.LOG_EVENT
 import java.io.IOException
-import java.util.HashMap
+import java.util.*
 
 
 class ArCoreFragment : ArFragment() {
 
     private val MIN_OPENGL_VERSION = 3.0
-    private val DEFAULT_IMAGE_NAME = "default.jpg"
-    private val DEFAULT_IMAGE_NAME2 = "default2.jpg"
 
     private val augmentedImageMap: MutableMap<AugmentedImage, AugmentedImageNode?> = HashMap()
 
@@ -60,6 +58,9 @@ class ArCoreFragment : ArFragment() {
 
             LOG_EVENT("ERROR", "Could not setup augmented image database")
         }
+
+        LOG_EVENT("THREAD",Looper.myLooper() == Looper.getMainLooper())
+
         return config
     }
 
@@ -98,7 +99,6 @@ class ArCoreFragment : ArFragment() {
         config: Config,
         session: Session
     ): Boolean {
-        val augmentedImageDatabase: AugmentedImageDatabase
         val assetManager =
             if (context != null) context!!.assets else null
         if (assetManager == null) {
@@ -106,36 +106,24 @@ class ArCoreFragment : ArFragment() {
             return false
         }
 
-        val augmentedImageBitmap = loadAugmentedImageBitmap(
-            assetManager,
-            DEFAULT_IMAGE_NAME
-        )
-        val augmentedImageBitmap2 = loadAugmentedImageBitmap(
-            assetManager,
-            DEFAULT_IMAGE_NAME2
-        )
-        if (augmentedImageBitmap == null) {
-            return false
+        val augmentedImageDatabase: AugmentedImageDatabase = AugmentedImageDatabase(session)
+
+        itemInteractor.getListSink().forEach {
+            augmentedImageDatabase.addImage(
+                it.name,
+                loadAugmentedImageBitmap(it.imagePlace)
+            )
         }
-        augmentedImageDatabase = AugmentedImageDatabase(session)
-        augmentedImageDatabase.addImage(
-            DEFAULT_IMAGE_NAME,
-            augmentedImageBitmap
-        )
-        augmentedImageDatabase.addImage(
-            DEFAULT_IMAGE_NAME2,
-            augmentedImageBitmap2
-        )
+
+
         config.augmentedImageDatabase = augmentedImageDatabase
         return true
     }
 
-    private fun loadAugmentedImageBitmap(assetManager: AssetManager, name: String): Bitmap? {
+    private fun loadAugmentedImageBitmap(path: String): Bitmap? {
         try {
-            assetManager.open(name).use { `is` -> return BitmapFactory.decodeStream(`is`) }
-        } catch (e: IOException) {
-            LOG_EVENT("ERROR", "IO exception loading augmented image bitmap.")
-        }
+            return BitmapFactory.decodeFile(path)
+        } catch (e: IOException) { }
         return null
     }
 

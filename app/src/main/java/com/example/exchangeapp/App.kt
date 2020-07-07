@@ -33,6 +33,3 @@ class App : Application() {
 }
 
 
-fun Double.displayText(): String {
-    return DecimalFormat("###.##").format(this)
-}

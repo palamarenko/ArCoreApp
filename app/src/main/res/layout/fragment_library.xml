@@ -28,6 +28,7 @@
 
 <ua.palamarenko.cozyandroid2.CozyRecyclerView
     android:id="@+id/recycler"
+    android:paddingTop="8dp"
     app:Sliding="true"
     app:layout_constraintTop_toBottomOf="@id/tvAdd"
     app:layout_constraintBottom_toBottomOf="parent"

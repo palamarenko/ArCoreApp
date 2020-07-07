@@ -55,6 +55,7 @@ class DiModule {
     fun provideDb(context: Context): DataBase {
         val cjName = "Db"
         return Room.databaseBuilder(context, DataBase::class.java, cjName)
+            .allowMainThreadQueries()
             .fallbackToDestructiveMigration()
             .build()
     }

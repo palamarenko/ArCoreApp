@@ -21,6 +21,10 @@ interface ItemModelDao {
 
     @Query("SELECT * FROM ItemModel")
     fun getList(): Single<List<ItemModel>>
+
+    @Query("SELECT * FROM ItemModel")
+    fun getListSink(): List<ItemModel>
+
     @Query("SELECT * FROM ItemModel WHERE id  =:id")
     fun get(id : String): Single<ItemModel>
 
